@@ -17,7 +17,7 @@ class AddProject extends Component {
       errors: {},
     };
 
-    this.onChange = this.onChange.bind(this);
+    // this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
@@ -28,9 +28,9 @@ class AddProject extends Component {
     }
   }
 
-  onChange(e) {
+  onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
-  }
+  };
 
   onSubmit(e) {
     e.preventDefault();
@@ -41,6 +41,7 @@ class AddProject extends Component {
       start_date: this.state.start_date,
       end_date: this.state.end_date,
     };
+
     this.props.createProject(newProject, this.props.history);
   }
 
