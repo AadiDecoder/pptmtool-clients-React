@@ -34,8 +34,7 @@ export const login = (LoginRequest, history) => async (dispatch) => {
     const token = res.data.token;
     console.log(token);
     //store the token in the localStorage
-    localStorage.setItem("jwsToken", token);
-    console.log("after local storage");
+    localStorage.setItem("jwtToken", token);
     //set our token in the header ***
     setJWToken(token);
     console.log("afetr jwt settoken");
@@ -54,4 +53,13 @@ export const login = (LoginRequest, history) => async (dispatch) => {
       payload: Err.response.data,
     });
   }
+};
+
+export const logout = () => (dispatch) => {
+  localStorage.removeItem("jwtToken");
+  setJWToken(false);
+  dispatch({
+    type: SET_CURRENT_USER,
+    payload: {},
+  });
 };

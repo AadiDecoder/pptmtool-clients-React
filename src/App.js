@@ -16,9 +16,9 @@ import Login from "../src/components/UserManagement/Login";
 import jwt_decode from "jwt-decode";
 import setJWToken from "./securityUtils/setJWToken";
 import { SET_CURRENT_USER } from "./actions/types";
-import axios from "axios";
+import { logout } from "./actions/securityActions";
 
-const jwtToken = localStorage.jwsToken;
+const jwtToken = localStorage.jwtToken;
 console.log(jwtToken);
 if (jwtToken) {
   setJWToken(jwtToken);
@@ -27,18 +27,15 @@ if (jwtToken) {
     type: SET_CURRENT_USER,
     payload: decoded_jwt,
   });
+  // console.log(decoded_jwt.exp);
 
   const currentTime = Date.now() / 1000;
+  // console.log(currentTime);
   if (decoded_jwt.exp < currentTime) {
-    // delete axios.defaults.headers.common["Authorization"];
-    // // store.dispatch({
-    // //   type: SET_CURRENT_USER,
-    // //   payload: decoded_jwt,
-    // // });
-    // window.location.href = "/";
+    store.dispatch(logout());
+    window.location.href = "/";
   }
 }
-
 class App extends Component {
   render() {
     return (
