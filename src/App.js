@@ -10,6 +10,34 @@ import store from "./store";
 import updateProject from "../src/components/Project/updateProject";
 import projectBoard from "../src/components/ProjectBoard/ProjectBoard";
 import addProjectTask from "../src/components/ProjectBoard/ProjectTask/AddProjeckTask";
+import Landing from "../src/components/Layout/Landing";
+import Register from "../src/components/UserManagement/Register";
+import Login from "../src/components/UserManagement/Login";
+import jwt_decode from "jwt-decode";
+import setJWToken from "./securityUtils/setJWToken";
+import { SET_CURRENT_USER } from "./actions/types";
+import axios from "axios";
+
+const jwtToken = localStorage.jwsToken;
+console.log(jwtToken);
+if (jwtToken) {
+  setJWToken(jwtToken);
+  const decoded_jwt = jwt_decode(jwtToken);
+  store.dispatch({
+    type: SET_CURRENT_USER,
+    payload: decoded_jwt,
+  });
+
+  const currentTime = Date.now() / 1000;
+  if (decoded_jwt.exp < currentTime) {
+    // delete axios.defaults.headers.common["Authorization"];
+    // // store.dispatch({
+    // //   type: SET_CURRENT_USER,
+    // //   payload: decoded_jwt,
+    // // });
+    // window.location.href = "/";
+  }
+}
 
 class App extends Component {
   render() {
@@ -18,6 +46,15 @@ class App extends Component {
         <Router>
           <div className="App">
             <Header />
+            {
+              //Private Routes
+            }
+            <Route exact path="/" component={Landing} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/login" component={Login} />
+            {
+              //Public Routes
+            }
             <Route exact path="/dashboard" component={Dashboard} />
             <Route exact path="/addProject" component={AddProject} />
             <Route exact path="/updateProject/:id" component={updateProject} />
